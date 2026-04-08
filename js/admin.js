@@ -8,15 +8,15 @@
 /** global: elasticsearch_settings */
 
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
 
 
 	/**
 	 * @constructs ElasticSearchAdmin
 	 */
 	var ElasticSearchAdmin = function () {
-		$.extend(ElasticSearchAdmin.prototype, elasticsearch_elements);
-		$.extend(ElasticSearchAdmin.prototype, elasticsearch_settings);
+		Object.assign(ElasticSearchAdmin.prototype, elasticsearch_elements);
+		Object.assign(ElasticSearchAdmin.prototype, elasticsearch_settings);
 
 		elasticsearch_elements.init();
 		elasticsearch_settings.refreshSettingPage();

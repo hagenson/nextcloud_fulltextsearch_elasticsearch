@@ -16,12 +16,11 @@ var elasticsearch_settings = {
 
 	refreshSettingPage: function () {
 
-		$.ajax({
-			method: 'GET',
-			url: OC.generateUrl('/apps/fulltextsearch_elasticsearch/admin/settings')
-		}).done(function (res) {
+		fetch(OC.generateUrl('/apps/fulltextsearch_elasticsearch/admin/settings'), {
+			headers: { requesttoken: OC.requestToken }
+		}).then(function (r) { return r.json(); }).then(function (res) {
 			elasticsearch_settings.updateSettingPage(res);
-		});
+		}).catch(function (e) { console.error(e); });
 
 	},
 
@@ -29,9 +28,9 @@ var elasticsearch_settings = {
 	/** @namespace result.elastic_index */
 	updateSettingPage: function (result) {
 
-		elasticsearch_elements.elasticsearch_host.val(result.elastic_host);
-		elasticsearch_elements.elasticsearch_index.val(result.elastic_index);
-		elasticsearch_elements.analyzer_tokenizer.val(result.analyzer_tokenizer);
+		elasticsearch_elements.elasticsearch_host.value = result.elastic_host;
+		elasticsearch_elements.elasticsearch_index.value = result.elastic_index;
+		elasticsearch_elements.analyzer_tokenizer.value = result.analyzer_tokenizer;
 
 		fts_admin_settings.tagSettingsAsSaved(elasticsearch_elements.elasticsearch_div);
 	},
@@ -40,19 +39,28 @@ var elasticsearch_settings = {
 	saveSettings: function () {
 
 		var data = {
-			elastic_host: elasticsearch_elements.elasticsearch_host.val(),
-			elastic_index: elasticsearch_elements.elasticsearch_index.val(),
-			analyzer_tokenizer: elasticsearch_elements.analyzer_tokenizer.val()
+			elastic_host: elasticsearch_elements.elasticsearch_host.value,
+			elastic_index: elasticsearch_elements.elasticsearch_index.value,
+			analyzer_tokenizer: elasticsearch_elements.analyzer_tokenizer.value
 		};
 
-		$.ajax({
+		OC.msg.startSaving('#elastic_search .msg');
+		var params = new URLSearchParams();
+		for (var k in data) {
+			params.append('data[' + k + ']', data[k]);
+		}
+		fetch(OC.generateUrl('/apps/fulltextsearch_elasticsearch/admin/settings'), {
 			method: 'POST',
-			url: OC.generateUrl('/apps/fulltextsearch_elasticsearch/admin/settings'),
-			data: {
-				data: data
-			}
-		}).done(function (res) {
+			headers: {
+				requesttoken: OC.requestToken,
+				'Content-Type': 'application/x-www-form-urlencoded'
+			},
+			body: params.toString()
+		}).then(function (r) { return r.json(); }).then(function (res) {
 			elasticsearch_settings.updateSettingPage(res);
+			OC.msg.finishedSuccess('#elastic_search .msg', t('fulltextsearch_elasticsearch', 'Saved'));
+		}).catch(function () {
+			OC.msg.finishedError('#elastic_search .msg', t('fulltextsearch_elasticsearch', 'Error'));
 		});
 
 	}

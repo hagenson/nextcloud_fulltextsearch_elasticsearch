@@ -16,31 +16,32 @@ var elasticsearch_elements = {
 
 
 	init: function () {
-		elasticsearch_elements.elasticsearch_div = $('#elastic_search');
-		elasticsearch_elements.elasticsearch_host = $('#elasticsearch_host');
-		elasticsearch_elements.elasticsearch_index = $('#elasticsearch_index');
-		elasticsearch_elements.analyzer_tokenizer = $('#analyzer_tokenizer');
+		elasticsearch_elements.elasticsearch_div = document.getElementById('elastic_search');
+		elasticsearch_elements.elasticsearch_host = document.getElementById('elasticsearch_host');
+		elasticsearch_elements.elasticsearch_index = document.getElementById('elasticsearch_index');
+		elasticsearch_elements.analyzer_tokenizer = document.getElementById('analyzer_tokenizer');
 
-		elasticsearch_elements.elasticsearch_host.on('input', function () {
-			fts_admin_settings.tagSettingsAsNotSaved($(this));
-		}).blur(function () {
+		elasticsearch_elements.elasticsearch_host.addEventListener('input', function (e) {
+			fts_admin_settings.tagSettingsAsNotSaved(e.target);
+		});
+		elasticsearch_elements.elasticsearch_host.addEventListener('blur', function () {
 			elasticsearch_settings.saveSettings();
 		});
 
-		elasticsearch_elements.elasticsearch_index.on('input', function () {
-			fts_admin_settings.tagSettingsAsNotSaved($(this));
-		}).blur(function () {
+		elasticsearch_elements.elasticsearch_index.addEventListener('input', function (e) {
+			fts_admin_settings.tagSettingsAsNotSaved(e.target);
+		});
+		elasticsearch_elements.elasticsearch_index.addEventListener('blur', function () {
 			elasticsearch_settings.saveSettings();
 		});
 
-		elasticsearch_elements.analyzer_tokenizer.on('input', function () {
-			fts_admin_settings.tagSettingsAsNotSaved($(this));
-		}).blur(function () {
+		elasticsearch_elements.analyzer_tokenizer.addEventListener('input', function (e) {
+			fts_admin_settings.tagSettingsAsNotSaved(e.target);
+		});
+		elasticsearch_elements.analyzer_tokenizer.addEventListener('blur', function () {
 			elasticsearch_settings.saveSettings();
 		});
 	}
 
 
 };
-
-

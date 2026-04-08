@@ -20,6 +20,7 @@ Util::addStyle(Application::APP_NAME, 'admin');
 
 <div id="elastic_search" class="section" style="display: none;">
 	<h2><?php p($l->t('Elastic Search')) ?></h2>
+	<span class="msg"></span>
 
 	<div class="div-table">
 
